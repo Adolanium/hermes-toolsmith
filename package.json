@@ -1,0 +1,38 @@
+{
+  "name": "hermes-toolsmith",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts && node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "format": "prettier --write src tests scripts docs package.json tsconfig.json README.md THIRD_PARTY_NOTICES.md",
+    "format:check": "prettier --check src tests scripts docs package.json tsconfig.json README.md THIRD_PARTY_NOTICES.md",
+    "check": "npm run typecheck && npm test && npm run build && node --check desktop/plugin.js && npm run test:browser"
+  },
+  "dependencies": {
+    "entities": "6.0.1"
+  },
+  "devDependencies": {
+    "@radix-ui/react-select": "^2.2.6",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "esbuild": "^0.25.0",
+    "playwright": "^1.55.0",
+    "prettier": "^3.6.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "description": "Local developer tools, transformation recipes and reviewed chat handoff for Hermes Desktop.",
+  "license": "MIT",
+  "author": "Adolanium",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Adolanium/hermes-toolsmith.git"
+  }
+}

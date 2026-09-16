@@ -1,0 +1,10 @@
+name: hermes-toolsmith
+version: 1.0.0
+description: Local developer tools, transformation recipes and reviewed chat handoff for Hermes Desktop.
+author: Adolanium
+manifest_version: 1
+kind: standalone
+provides_tools: []
+provides_hooks: []
+provides_middleware: []
+requires_env: []
