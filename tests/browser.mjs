@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
+import { rewriteHostImports } from "../scripts/loader-contract.mjs";
 
 await mkdir("test-results", { recursive: true });
 await build({
@@ -16,14 +17,21 @@ await build({
   define: { "process.env.NODE_ENV": '"development"' },
 });
 const hostSource = await readFile("test-results/host.js");
-const artifact = await readFile("desktop/plugin.js");
+const artifact = rewriteHostImports(
+  await readFile("desktop/plugin.js", "utf8"),
+  {
+    "@hermes/plugin-sdk": "/host.js",
+    react: "/react.js",
+    "react/jsx-runtime": "/jsx.js",
+  },
+);
 const wrapper = `import { ReactExports as R } from '/host.js';export default R;export const {useEffect,useState,useRef,useSyncExternalStore,useId}=R;`;
 const jsxWrapper = `import { jsxExports as R } from '/host.js';export const {jsx,jsxs,Fragment}=R;`;
 const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Toolsmith built-artifact fixture</title><style>
 html,body,#root{margin:0;height:100%;font:13px/1.5 system-ui}.mock-host{--ui-bg-primary:#191b1f;--ui-bg-secondary:#24272c;--ui-text-primary:#eceef1;--ui-text-secondary:#aeb6c1;--ui-stroke-primary:#424851;--color-primary:#98bafb;height:100%;display:flex;flex-direction:column;color:var(--ui-text-primary);background:var(--ui-bg-primary);color-scheme:dark}.mock-host.light{--ui-bg-primary:#fff;--ui-bg-secondary:#f0f2f5;--ui-text-primary:#24272c;--ui-text-secondary:#56616d;--ui-stroke-primary:#c4cbd4;--color-primary:#365f9c;color-scheme:light}.mock-header{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--ui-stroke-primary);padding:8px 12px;flex-wrap:wrap}.mock-header span{flex:1;font-size:11px;color:var(--ui-text-secondary)}button{font:inherit;background:var(--ui-bg-secondary);color:var(--ui-text-primary);border:1px solid var(--ui-stroke-primary);border-radius:3px;padding:4px 9px}button[data-variant=default]{background:var(--color-primary);color:var(--ui-bg-primary);border-color:var(--color-primary)}.mock-workspace{flex:1;min-height:0}.mock-status{padding:4px 10px;border-top:1px solid var(--ui-stroke-primary)}.mock-overlay{position:fixed;inset:0;background:#0008;display:grid;place-items:center;z-index:10}.mock-dialog{width:min(600px,90vw);padding:22px;background:var(--ui-bg-primary);border:1px solid var(--ui-stroke-primary);border-radius:8px;max-height:90vh;overflow:auto}.mock-dialog h2{margin:0;font-size:18px}
 .mock-host{--ui-bg-editor:var(--ui-bg-primary);--ui-bg-sidebar:var(--ui-bg-primary);--ui-row-hover-background:var(--ui-bg-secondary);--ui-stroke-secondary:var(--ui-stroke-primary);--ring:var(--color-primary)}
 .mock-host input:not([type=checkbox]),.mock-host textarea,.mock-host [data-slot=select-trigger]{background:var(--ui-bg-secondary);color:var(--ui-text-primary);border:1px solid var(--ui-stroke-primary);border-radius:3px;padding:6px 10px;font:12px/1.5 system-ui}.mock-select-content{z-index:20;background:var(--ui-bg-secondary);color:var(--ui-text-primary);border:1px solid var(--ui-stroke-primary);border-radius:4px;min-width:var(--radix-select-trigger-width);padding:4px}.mock-select-item{padding:5px 10px;font-size:12px;outline:none}.mock-select-item[data-highlighted]{background:var(--color-primary);color:var(--ui-bg-primary)}
-</style><script type="importmap">{"imports":{"@hermes/plugin-sdk":"/host.js","react":"/react.js","react/jsx-runtime":"/jsx.js"}}</script></head><body><div id="root"></div><script type="module">import { start } from '/host.js'; await start();</script></body></html>`;
+</style></head><body><div id="root"></div><script type="module">import { start } from '/host.js'; await start();</script></body></html>`;
 const server = createServer((req, res) => {
   const resources = {
     "/": [html, "text/html"],

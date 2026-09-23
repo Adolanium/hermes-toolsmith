@@ -472,7 +472,7 @@ var getCodePoint = (
 );
 
 // node_modules/entities/dist/esm/encode.js
-var htmlReplacer = /[\t\n\f!-,./:-@[-`{-}\u0080-\uFFFF]/g;
+var htmlReplacer = /[\t\n\f!-,./:-@[-\x60{-}\u0080-\uFFFF]/g;
 function encodeHTML(input) {
   return encodeHTMLTrieRe(htmlReplacer, input);
 }
