@@ -2,6 +2,7 @@ import { build } from "esbuild";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { assertLoaderCompatible } from "./loader-contract.mjs";
+import { escapeRegexBackticks } from "./escape-regex-backticks.mjs";
 await mkdir("desktop", { recursive: true });
 await mkdir("dist", { recursive: true });
 const license = await readFile("node_modules/entities/LICENSE", "utf8");
@@ -23,8 +24,11 @@ const output = await build({
       "\n*/",
   },
 });
-const artifact = await readFile("desktop/plugin.js", "utf8");
+const artifact = escapeRegexBackticks(
+  await readFile("desktop/plugin.js", "utf8"),
+);
 assertLoaderCompatible(artifact);
+await writeFile("desktop/plugin.js", artifact);
 const imports = output.metafile.outputs["desktop/plugin.js"].imports;
 if (
   imports.some(
