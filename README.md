@@ -10,7 +10,7 @@
 
 Format JSON, decode a payload, compare text, or chain conversions together. Nineteen tool families in one native Hermes Desktop page. Your input stays local until you choose to copy or share it.
 
-<sub>POWERED BY <a href="https://github.com/NousResearch/hermes-agent">HERMES AGENT</a> &nbsp;·&nbsp; COMMUNITY PLUGIN &nbsp;·&nbsp; VERSION 1.0.0</sub>
+<sub>POWERED BY <a href="https://github.com/NousResearch/hermes-agent">HERMES AGENT</a> &nbsp;·&nbsp; COMMUNITY PLUGIN &nbsp;·&nbsp; VERSION 1.0.1</sub>
 
 <br /><br />
 

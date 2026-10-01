@@ -1,4 +1,4 @@
-/* Hermes Toolsmith 1.0.0. Bundled dependency: entities 6.0.1 (BSD-2-Clause).
+/* Hermes Toolsmith 1.0.1. Bundled dependency: entities 6.0.1 (BSD-2-Clause).
 Copyright (c) Felix Böhm
 All rights reserved.
 

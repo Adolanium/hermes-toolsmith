@@ -19,7 +19,7 @@ const output = await build({
   legalComments: "inline",
   banner: {
     js:
-      "/* Hermes Toolsmith 1.0.0. Bundled dependency: entities 6.0.1 (BSD-2-Clause).\n" +
+      "/* Hermes Toolsmith 1.0.1. Bundled dependency: entities 6.0.1 (BSD-2-Clause).\n" +
       license +
       "\n*/",
   },
